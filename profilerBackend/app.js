@@ -32,14 +32,45 @@ auth = require('./auth');
 auth(passport);
 app.use(passport.initialize());
 
+app.use(cookieSession({
+    name: 'session',
+    keys: ['SECRECT KEY'],
+    maxAge: 24 * 60 * 60 * 1000
+}));
+app.use(cookieParser());
+
+// CORS
+// Add headers
+/*var cors = require('cors');
+
+// use it before all route definitions
+app.use(cors({origin: 'http://localhost:4200'}));*/
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+//app.use('/', indexRouter);
+//app.use('/users', usersRouter);
+// catch 404 and forward to error handler
+/*app.use(function(req, res, next) {
+  next(createError(404));
+});*/
+
 app.get('/', (req, res) => {
-    if (req.session.token) {
-        res.cookie('token', req.session.token);
+   if (req.session.token) {
+   res.cookie('token', req.session.token);
         res.json({
-            status: 'session cookie set'
+            status: req.session
         });
     } else {
-        res.cookie('token', '')
+       res.cookie('token', '')
         res.json({
             status: 'session cookie not set'
         });
@@ -58,7 +89,7 @@ app.get('/auth/google', passport.authenticate('google', {
 
 app.get('/auth/google/callback',
     passport.authenticate('google', {
-        failureRedirect: '/'
+      failureRedirect: '/'
     }),
     (req, res) => {
         console.log(req.user.token);
@@ -66,38 +97,6 @@ app.get('/auth/google/callback',
         res.redirect('/');
     }
 );
-
-
-app.use(cookieSession({
-    name: 'session',
-    keys: ['SECRECT KEY'],
-    maxAge: 24 * 60 * 60 * 1000
-}));
-app.use(cookieParser());
-
-// CORS
-// Add headers
-var cors = require('cors');
-
-// use it before all route definitions
-app.use(cors({origin: 'http://localhost:3000'}));
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
 
 // error handler
 app.use(function(err, req, res, next) {

@@ -12,9 +12,8 @@ export class AuthService {
 
   constructor(private http:HttpClient) {}
 
-  public login() {
-     return this.http.get('http://localhost:3000/auth/google/callback');
-     
+  public login() {    
+
   }
 }
 
