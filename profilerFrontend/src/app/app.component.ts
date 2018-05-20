@@ -15,7 +15,7 @@ export class AppComponent {
 
   public login(){
 
-  	
+  	this.auth.login();
 
   }
 }

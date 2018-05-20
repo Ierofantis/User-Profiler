@@ -24,20 +24,6 @@ connection.connect(function(err) {
   console.log('You are now connected on mysql...')
 })
 
-// password setup
-passport = require('passport'),
-auth = require('./auth');
-    cookieParser = require('cookie-parser'),
-    cookieSession = require('cookie-session');
-auth(passport);
-app.use(passport.initialize());
-
-app.use(cookieSession({
-    name: 'session',
-    keys: ['SECRECT KEY'],
-    maxAge: 24 * 60 * 60 * 1000
-}));
-app.use(cookieParser());
 
 // CORS
 // Add headers
@@ -56,47 +42,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/', indexRouter);
-//app.use('/users', usersRouter);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 // catch 404 and forward to error handler
-/*app.use(function(req, res, next) {
+app.use(function(req, res, next) {
   next(createError(404));
-});*/
-
-app.get('/', (req, res) => {
-   if (req.session.token) {
-   res.cookie('token', req.session.token);
-        res.json({
-            status: req.session
-        });
-    } else {
-       res.cookie('token', '')
-        res.json({
-            status: 'session cookie not set'
-        });
-    }
 });
 
-app.get('/logout', (req, res) => {
-    req.logout();
-    req.session = null;
-    res.redirect('/');
-});
 
-app.get('/auth/google', passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/userinfo.profile']
-}));
-
-app.get('/auth/google/callback',
-    passport.authenticate('google', {
-      failureRedirect: '/'
-    }),
-    (req, res) => {
-        console.log(req.user.token);
-        req.session.token = req.user.token;
-        res.redirect('/');
-    }
-);
 
 // error handler
 app.use(function(err, req, res, next) {
