@@ -4,7 +4,8 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './auth/auth.service';
-
+import { RouterModule } from '@angular/router';
+import { DealService } from './deal.service';
 //import { ROUTES } from './app.routes';
 
 @NgModule({
@@ -12,14 +13,12 @@ import { AuthService } from './auth/auth.service';
     AppComponent
   ],
   imports: [
-
     BrowserModule,
     HttpModule,
-    HttpClientModule
-
-
+    HttpClientModule,
+    RouterModule
   ],
-   providers: [AuthService],
+   providers: [AuthService, RouterModule, DealService ],
 
   bootstrap: [AppComponent]
 })
