@@ -21,14 +21,14 @@ var authCheck = jwt({
         jwksRequestsPerMinute: 5,
         jwksUri: "https://ierofantis.eu.auth0.com/.well-known/jwks.json" // @TODO: remove domain name
     }),
-    audience: 'domain/api/v2/', 
-    issuer: "domain", // @TODO: remove domain name
+    audience: 'https://ierofantis.eu.auth0.com/api/v2/', 
+    issuer: "https://ierofantis.eu.auth0.com/", // @TODO: remove domain name
     algorithms: ['RS256']
 });
 
 var app = express();
 
-var connection = mysql.createConnection({
+/*var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
@@ -39,7 +39,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err
   console.log('You are now connected on mysql...')
-})
+})*/
 
 
 // CORS
