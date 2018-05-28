@@ -12,8 +12,12 @@ import {Observable} from 'rxjs/Rx';
 export class AppComponent {
   title = 'app';
 
- constructor(public auth: AuthService, public deal: DealService) {}
-
+ constructor(public auth: AuthService, public deal: DealService) {
+    auth.handleAuthentication();
+ }
+ngOnInit() {
+   console.log(this.auth);
+  }
   public login(){
   	this.auth.login();
   }
@@ -23,6 +27,10 @@ export class AppComponent {
   } 
 
    public AuthDeals(){
-  	this.deal.getAuthDeals();
+  	this.deal.getPrivateDeals();
   } 
+
+    public loadToken(){
+    this.auth.loadToken()
+  }
 }

@@ -16,14 +16,13 @@ var cors = require('cors');
 
 var authCheck = jwt({
     secret: jwks.expressJwtSecret({
-        cache: true,
-        client_secret: 'PsjmgYIgR4dByovTWHWrq85aRZ6oYPOMqQcjgyiy',
+        cache: true,        
         rateLimit: true,
         jwksRequestsPerMinute: 5,
         jwksUri: "https://ierofantis.eu.auth0.com/.well-known/jwks.json" // @TODO: remove domain name
     }),
-    audience: 'https://ierofantis.eu.auth0.com/userinfo',
-    issuer: "https://ierofantis.eu.auth0.com", // @TODO: remove domain name
+    audience: 'domain/api/v2/', 
+    issuer: "domain", // @TODO: remove domain name
     algorithms: ['RS256']
 });
 
@@ -63,6 +62,7 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Headers', 'Content-Type', 'Authorization')
     next();
 })
 /*app.use('/', indexRouter);

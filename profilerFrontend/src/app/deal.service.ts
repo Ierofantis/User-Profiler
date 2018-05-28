@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import {  Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth/auth.service';
+import { Deal } from './deal';
 
 @Injectable()
 export class DealService {
@@ -12,8 +13,8 @@ export class DealService {
   private privateDealsUrl = 'http://localhost:3000/api/deals/private';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService
+    public http: HttpClient,
+    public authService: AuthService
   ) { }
 
   // Implement a method to get the public deals
@@ -30,16 +31,26 @@ export class DealService {
     });
   }
 
-
+  public get authHeader(): string {
+    return `Bearer ${localStorage.getItem('access_token')}`;
+  }
  // Implement a method to get the private deals
   getPrivateDeals() {  
- console.log('getPrivateBefore');
-     this.http.get(this.privateDealsUrl, {
 
-        headers: new HttpHeaders().set('Authorization', 'Bearer ${this.authService.accessToken}')
+     this.http.get(this.privateDealsUrl, {
+    
+        headers: new HttpHeaders().set('Authorization',  `Bearer ${localStorage.getItem('access_token')}` )
       }).subscribe((res: Response) => {
        console.log(res);
        console.log('getPrivate');
     });
   }   
+
+
+   // Implement a method to handle errors if any
+// Implement a method to handle errors if any
+  private handleError(err: HttpErrorResponse | any) {
+    console.error('An error occurred', err);
+    // return throwError(err.message || err);
+  }
 }

@@ -4,21 +4,43 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './auth/auth.service';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { DealService } from './deal.service';
 //import { ROUTES } from './app.routes';
-
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/',
+    pathMatch: 'full'
+  }/*,
+  {
+    path: 'deals',
+    component: PublicDealsComponent
+  },
+  {
+    path: 'special',
+    component: PrivateDealsComponent,
+    canActivate: [
+      AuthGuard
+    ]
+  },
+  {
+    path: 'callback',
+    component: CallbackComponent
+  }*/
+];
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+  [RouterModule.forRoot(routes)],
     BrowserModule,
     HttpModule,
     HttpClientModule,
-    RouterModule
+   RouterModule
   ],
-   providers: [AuthService, RouterModule, DealService ],
+   providers: [AuthService, DealService ],
 
   bootstrap: [AppComponent]
 })
